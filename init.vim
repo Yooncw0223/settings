@@ -1,32 +1,34 @@
-
-set relativenumber
+set lazyredraw
 set nu
 set nohlsearch
 set hidden
-"set nowrap
 set expandtab
 set shiftwidth=4
-set incsearch
-set scrolloff=8
-"set signcolumn=yes
+
+set synmaxcol=128
+syntax sync minlines=256
 set autoindent
 set smartindent
-set guicursor=i:block
+
+set incsearch
+set scrolloff=8
 set mouse+=a
 set clipboard=unnamed
+
+
+
 
 call plug#begin()
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-"Plug 'preservim/nerdtree'
+
+" set cul
 
 if has("nvim")
     Plug 'neovim/nvim-lspconfig'
-    Plug 'glepnir/lspsaga.nvim'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'vim-airline/vim-airline'
-    "Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'ryanoasis/vim-devicons'
     Plug 'kyazdani42/nvim-web-devicons' 
     Plug 'kyazdani42/nvim-tree.lua'
@@ -36,15 +38,35 @@ if has("nvim")
     Plug 'hrsh7th/cmp-path'
     Plug 'hrsh7th/cmp-cmdline'
     Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-vsnip'
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'hrsh7th/vim-vsnip-integ'
+    Plug 'mfussenegger/nvim-jdtls'
 
-    Plug 'cocopon/iceberg.vim'
-    Plug 'junegunn/seoul256.vim'
+    Plug 'sainnhe/everforest'
+    Plug 'Raimondi/delimitMate'
+    Plug 'danymat/neogen'
 
-    Plug 'folke/lua-dev.nvim'
-    Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+    " latex
+    Plug 'lervag/vimtex'
+    Plug 'latex-lsp/texlab'
 
 
-    Plug 'rakr/vim-one'
+    Plug 'L3MON4D3/LuaSnip', {'tag': 'v<CurrentMajor>.*'}
+
+    " tmux
+    Plug 'edkolev/tmuxline.vim'
+
+
+
+    " linter
+    Plug 'neomake/neomake'
+
+
+    Plug 'EdenEast/nightfox.nvim'
+    Plug 'projekt0n/github-nvim-theme', { 'tag': 'v0.0.7' }
+
+
 endif
 
 
@@ -55,47 +77,16 @@ call plug#end()
 if exists("&termguicolors") && exists("&winblend")
     syntax enable
     set termguicolors
-    "set winblend=0
-    "set wildoptions=pum
-    "set pumblend=5
-    
-"    let ayucolor="light"
-"    colorscheme ayu 
-    
-    colorscheme iceberg 
-"    colorscheme toast
-"    set termguicolors
-
-
-"    let hour = strftime("%H")
-"    if 7 < hour && hour < 17
-"        colorscheme one
-"        set background=light
-"        let g:airline_theme='one'
-"    else
-
-"    set background=dark
-    
-"    let g:miramare_enable_italic = 1
-"    let g:miramare_disable_italic_comment = 1
-"    " might need another line here just in case; 2:48 of the video 
-"    let g:miramare_palette = {
-"                            \ 'bg0': ['#161514', '111', 'LightGrey'],
-"                            \ 'bg1':  ['#161514', '111', 'DarkGrey'],     
-"                            \ 'bg2': ['#161514', '111', 'DarkGrey'],
-"                            \ 'bg3': ['#161514', '111', 'DarkGrey'],
-"                            \ 'bg4': ['#161514', '111', 'Grey'],
-"                            \ }
-"    
-"    runtime ./colors/miramare.vim
-"    colorscheme miramare
-"    endif
+    let g:everforest_background = 'hard'
+    colorscheme everforest 
+    "set background=light
+    "colorscheme github_light
 endif
 
 
-"let NERDTreeShowHidden=1
 
 lua << EOF
+
 -- examples for your init.lua
 
 -- empty setup using defaults
@@ -116,33 +107,79 @@ require("nvim-tree").setup({
     group_empty = true,
   },
   filters = {
-    dotfiles = true,
+    dotfiles = false,
   },
 })
+
 EOF
 
-"let g:airline#extensions#tabline#enabled = 1
-"let g:airline_powerline_fonts = 1
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#show_buffers = 0
+"let g:airline#extensions#tmuxline#enabled = 1
+"linter
+
+call neomake#configure#automake('w')
+
 
 lua << EOF
-require 'nvim-treesitter.configs'.setup {
-    highlight = {
-        enable = true,
-        disable = {},
-    },    indent = {
-        enable = false,
-        disable = {},
-    },
-    ensure_installed = {
-        "tsx",
+
+
+
+require'nvim-treesitter.configs'.setup{
+  -- A list of parser names, or "all"
+  ensure_installed = { 
+	"tsx",
         "typescript",
         "javascript",
-        "python",
         "html",
-        "scss"
-    }
+        "scss",
+  },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
+
+  -- List of parsers to ignore installing (for "all")
+  ignore_install = { "javascript" },
+  indent = {
+    disable = true,
+  },
+
+  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
+  -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+    -- the name of the parser)
+    -- list of language that will be disabled
+    disable = { "c", "rust" },
+    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+    disable = function(lang, buf)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
 }
 EOF
+
 
 
 
@@ -153,7 +190,7 @@ set updatetime=200
 
 nnoremap <SPACE> <Nop>
 map <Space> <Leader>
-nnoremap <Leader>nt :NvimTreeToggle<CR>
+nnoremap <Leader>nt :NvimTreeFocus<CR>
 nmap gh <C-w>h<CR>
 nmap gj <C-w>j<CR>
 nmap gk <C-w>k<CR>
@@ -164,6 +201,8 @@ nnoremap <Leader>l gt<CR>
 
 command! -nargs=* T split | terminal <args>
 command! -nargs=* VT vsplit | terminal <args>
+
+nnoremap <Leader>nr :lua require('neogen').generate()<CR>
 
 
 set completeopt=menu,menuone,noselect
@@ -217,6 +256,22 @@ lua <<EOF
         on_attach = on_attach,
         flags = lsp_flags,
     }
+    require('lspconfig')['ltex'].setup{
+        on_attach = on_attach,
+        flags = lsp_flags,
+    }
+    require('lspconfig')['ltex'].setup{
+        on_attach = on_attach,
+        flags = lsp_flags
+    }
+    require('lspconfig')['clangd'].setup {
+        on_attach = on_attach,
+        flags = lsp_flags
+    }
+--    require('lspconfig')['jdtls'].setup {
+--        on_attach = on_attach,
+--        flags = lsp_flags
+--    }
 
 
 
@@ -248,7 +303,7 @@ lua <<EOF
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
       ['<Tab>'] = cmp.mapping(function(fallback)
           local col = vim.fn.col('.') - 1
 
@@ -312,8 +367,15 @@ lua <<EOF
     }
   })
 
+  cmp.setup.filetype({ 'latex', 'help' }, {
+    window = {
+      documentation = cmp.config.enable
+    }
+  })
+
+
   -- Set up lspconfig.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
   require('lspconfig')['tsserver'].setup {
     capabilities = capabilities
@@ -321,4 +383,29 @@ lua <<EOF
   require('lspconfig')['pyright'].setup {
     capabilities = capabilities
   }
+  require('lspconfig')['ltex'].setup{
+    on_attach = on_attach,
+    capabilities = capabilities
+  }
+  require('lspconfig')['texlab'].setup{
+    on_attach = on_attach,
+    capabilities = capabilities
+  }
+  require('lspconfig')['clangd'].setup{
+    on_attach = on_attach,
+    capabilities = capabilities
+  }
 EOF
+
+
+
+
+" latex configs
+filetype plugin indent on
+syntax enable
+let g:tex_flavor='xelatex'
+let maplocalleader = "<Space>"
+let g:vimtex_view_method = 'skim'
+nnoremap <Leader>ll :VimtexCompile<CR>
+nnoremap <Leader>lv :VimtexView<CR>
+

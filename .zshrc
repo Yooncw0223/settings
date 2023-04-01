@@ -31,14 +31,17 @@ alias code="~/Code"
 alias dipper="~/Code/web/little-dipper"
 alias leet="~/Code/alg/LEET/python-code"
 alias vsettings="nvim ~/.config/nvim/init.vim"
-alias classes="~/MIT/F2022"
+alias classes="~/MIT/SP2023"
 alias linalg="~/MIT/F2022/1806"
 alias personal="~/Personal"
 alias note="~/Personal/notes & nvim"
-alias battlecode="~/MIT/IAP2023/battlecode/battleCode23-CM25K"
+alias learnC="~/Code/C/syntax"
+
+alias 1LN="nvim ~/MIT/SP2023/6033/6033LN.tex"
+alias 2LN="nvim ~/MIT/SP2023/18650/18650LN.tex"
 
 # tex
-alias cleanTex="rm *.aux & rm *.fls & rm *.log & rm *.synctex.gz & rm *.fdb_latexmk & rm *.xdv"
+alias ct="rm *.aux & rm *.fls & rm *.log & rm *.synctex.gz & rm *.fdb_latexmk & rm *.xdv & rm *.toc & rm *.out"
 
 alias l='lsd'
 alias ls='lsd'
@@ -92,3 +95,12 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 # tmux session
 #set +x
+
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_351.jdk/Contents/Home"
+export PATH="$JAVA_HOME/bin:$PATH"
+
+
+
+# temporary commands
+alias lamode="source ~/Code/python_environment/009_env/bin/activate"
+alias ml="source ~/CodeDependency/python_env/ml/bin/activate"
