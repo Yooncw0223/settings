@@ -48,15 +48,15 @@ config.font_rules = {
 -- config.font = wezterm.font("BlexMono Nerd Font")
 
 -- config.font_rasterizer = "FreeType"
-config.font_size = 10
+config.font_size = 12
 
 -- animation; FYI: for settings with GPU
-config.animation_fps = 120
+-- config.animation_fps = 120
 config.cursor_blink_ease_in = "Constant"
 config.cursor_blink_ease_out = "Constant"
 
 -- window
-config.window_decorations = "NONE"
+-- config.window_decorations = "NONE"
 
 -- tab bar
 
@@ -139,6 +139,7 @@ config.keys = {
 }
 
 -- turning off the glyph error (annoying!)
-config.warn_about_missing_glyphs = false
+-- config.warn_about_missing_glyphs = false
 
+config.adjust_window_size_when_changing_font_size = false
 return config
