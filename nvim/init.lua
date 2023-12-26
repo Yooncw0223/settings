@@ -142,6 +142,13 @@ require("tokyonight").setup({
 })
 
 
+require("lualineTheme")
+-- require("lualine").setup({
+--   theme = 'tokyonight'
+-- })
+
+require("barbar").setup()
+
 vim.api.nvim_command[[colorscheme tokyonight]]
 
 

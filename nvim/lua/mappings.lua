@@ -37,6 +37,11 @@ M.general = {
     -- line numbers
     ["<leader>n"] = { "<cmd> set nu! <CR>", "Toggle line number" },
     ["<leader>rn"] = { "<cmd> set rnu! <CR>", "Toggle relative number" },
+    ["<tab>"] = { "<cmd> BufferNext <CR>", "Going to the next buffer"},
+    ["<S-tab>"] = { "<cmd> BufferPrevious <CR>", "Going to the previous buffer"},
+    -- ["<S-Q>"] = { "<cmd> BufferClose <CR>", "exiting while deleting the buffer "},
+    ["<leader>1"] = { "<cmd> BufferClose <CR>", "exiting while deleting the buffer" },
+    ["<leader>s"] = { "<cmd> w <CR>", "saving buffer" },
 
     -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
     -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/

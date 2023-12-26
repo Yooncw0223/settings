@@ -32,7 +32,6 @@ return require('lspconfig').jdtls.setup{
          -- Must point to the                                                     Change this to
          -- eclipse.jdt.ls installation                                           the actual version
 
-
     -- 💀
     '-configuration', jdtls_folder .. 'config_mac',
                     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^
