@@ -19,15 +19,15 @@ local colors = {
   magenta  = '#c678dd',
   blue     = '#51afef',
   red      = '#ec5f67',
+  purple   = '#a042a7',
 }
 -- vim.cmd.highlight('MsgArea guibg=#222535')
-vim.api.nvim_create_autocmd({'ColorScheme', }, {
-  pattern = '*',
-  callback = function()
-    vim.cmd('highlight MsgArea guibg=#222535 gui=bold guisp=NONE')
-  end,
+vim.api.nvim_create_autocmd({ "ColorScheme" }, {
+	pattern = "*",
+	callback = function()
+		vim.cmd("highlight MsgArea guibg=#222535 gui=bold guisp=NONE")
+	end,
 })
-
 
 local conditions = {
 	buffer_not_empty = function()
@@ -92,7 +92,7 @@ ins_left({
 	function()
 		return "▊"
 	end,
-	color = { fg = colors.magenta}, -- Sets highlighting of component
+	color = { fg = colors.purple }, -- Sets highlighting of component
 	padding = { left = 0, right = 1 }, -- We don't need space before this
 })
 
@@ -134,21 +134,21 @@ ins_left({
 	-- filesize component
 	"filesize",
 	cond = conditions.buffer_not_empty,
-  icon = "󰈕",
-  color = { fg = colors.green, gui = "bold" }
+	icon = "󰈕",
+	color = { fg = colors.green, gui = "bold" },
 })
 
 ins_left({
 	"filename",
 	cond = conditions.buffer_not_empty,
 	color = { fg = colors.yellow, gui = "bold" },
-  icon = ""
+	icon = "",
 })
 
 ins_left({
-  "progress",
-  icon = "",
-  color = { fg = colors.magenta, gui = "bold" }
+	"progress",
+	icon = "",
+	color = { fg = colors.magenta, gui = "bold" },
 })
 
 ins_left({
@@ -229,7 +229,7 @@ ins_right({
 	function()
 		return "▊"
 	end,
-	color = { fg = colors.magenta },
+	color = { fg = colors.purple },
 	padding = { left = 1 },
 })
 

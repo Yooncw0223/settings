@@ -149,6 +149,8 @@ require("lualineTheme")
 
 require("barbar").setup()
 
+require("plugins.configs.copilot")
+
 vim.api.nvim_command[[colorscheme tokyonight]]
 
 
